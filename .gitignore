@@ -205,3 +205,25 @@ cython_debug/
 marimo/_static/
 marimo/_lsp/
 __marimo__/
+
+# PF-LoRA experiment artifacts
+artifacts/datasets/*/
+artifacts/activations/*/
+artifacts/subspaces/*/
+artifacts/checkpoints/*/
+artifacts/predictions/*/
+!artifacts/**/.gitkeep
+
+# Results (keep structure, ignore generated outputs)
+results/logs/*.json
+results/tables/*.csv
+results/figures/*.png
+results/figures/*.pdf
+!results/**/.gitkeep
+
+# Wandb
+wandb/
+
+# HuggingFace cache
+*.arrow
+*.parquet

@@ -1,0 +1,60 @@
+# General capability evaluation config
+# Uses lm-evaluation-harness for reproducible benchmark scores
+
+# Benchmarks to run via lm-eval
+tasks:
+  - name: mmlu_pro
+    task_id: mmlu_pro       # lm-eval task name
+    num_fewshot: 5
+    metric: acc
+    weight: 1.0
+
+  - name: hellaswag
+    task_id: hellaswag
+    num_fewshot: 10
+    metric: acc_norm
+    weight: 1.0
+
+  - name: arc_challenge
+    task_id: arc_challenge
+    num_fewshot: 25
+    metric: acc_norm
+    weight: 1.0
+
+  - name: gsm8k
+    task_id: gsm8k
+    num_fewshot: 8
+    metric: exact_match
+    weight: 1.0
+
+  - name: truthfulqa_mc2
+    task_id: truthfulqa_mc2
+    num_fewshot: 0
+    metric: acc
+    weight: 1.0
+
+# lm-eval runner settings
+lm_eval:
+  batch_size: auto          # auto-select based on GPU memory
+  max_batch_size: 16
+  device: cuda
+  apply_chat_template: true # CRITICAL: lock this to avoid prompt sensitivity
+  num_fewshot_as_multiturn: false
+
+# Capability tax computation
+# capability_tax = (base_score - finetuned_score) / base_score * 100
+# Negative tax = improvement; positive tax = degradation
+compute_capability_tax: true
+base_results_file: null   # set at runtime or override via CLI
+
+# Aggregate score
+# avg_capability_score = average of all task scores (equal-weighted)
+compute_avg_score: true
+
+# Output
+output_fields:
+  - task
+  - num_fewshot
+  - metric
+  - score
+  - capability_tax

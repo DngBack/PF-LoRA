@@ -1,0 +1,97 @@
+# Ablation sweep config (Week 6)
+# Each entry defines a named ablation run; the training script iterates over them.
+
+base_config: configs/train/protected_lora.yaml
+
+ablations:
+  # Ablation 1: No protection (identical to lora_baseline)
+  no_protection:
+    lambda_prot: 0.0
+    penalty_variant: soft
+
+  # Ablation 2: Soft penalty, lambda=1e-4 (weak)
+  soft_lambda_1e4:
+    lambda_prot: 1.0e-4
+    penalty_variant: soft
+    k_subspace: 64
+
+  # Ablation 3: Soft penalty, lambda=1e-3 (default)
+  soft_lambda_1e3:
+    lambda_prot: 1.0e-3
+    penalty_variant: soft
+    k_subspace: 64
+
+  # Ablation 4: Soft penalty, lambda=1e-2 (strong)
+  soft_lambda_1e2:
+    lambda_prot: 1.0e-2
+    penalty_variant: soft
+    k_subspace: 64
+
+  # Ablation 5: Hard gradient projection
+  hard_projection:
+    lambda_prot: 1.0e-3
+    penalty_variant: hard_projection
+    k_subspace: 64
+
+  # Ablation 6: Varying k — narrow subspace
+  k32:
+    lambda_prot: 1.0e-3
+    penalty_variant: soft
+    k_subspace: 32
+
+  # Ablation 7: Varying k — wide subspace
+  k128:
+    lambda_prot: 1.0e-3
+    penalty_variant: soft
+    k_subspace: 128
+
+  # Ablation 8: No Λ weighting (uniform instead of eigenvalue-weighted)
+  no_lambda_weighting:
+    lambda_prot: 1.0e-3
+    penalty_variant: soft
+    k_subspace: 64
+    use_eigenvalue_weighting: false
+
+  # Ablation 9: Lower layers only
+  lower_layers:
+    lambda_prot: 1.0e-3
+    penalty_variant: soft
+    k_subspace: 64
+    protect_layers: [0, 2, 4, 6, 8, 10, 12, 14]
+
+  # Ablation 10: Upper layers only
+  upper_layers:
+    lambda_prot: 1.0e-3
+    penalty_variant: soft
+    k_subspace: 64
+    protect_layers: [16, 18, 20, 22, 24, 26, 28, 30]
+
+  # Ablation 11: Guarded/free rank split
+  guarded_free_split:
+    lambda_prot: 1.0e-3
+    penalty_variant: soft
+    k_subspace: 64
+    lora_rank: 16
+    use_split_rank: true
+    guarded_rank: 4    # small rank budget for protected directions
+    free_rank: 12      # remaining budget free to learn alignment
+
+  # Ablation 12: Attention + MLP modules
+  attn_and_mlp:
+    lambda_prot: 1.0e-3
+    penalty_variant: soft
+    k_subspace: 64
+    target_modules:
+      - q_proj
+      - k_proj
+      - v_proj
+      - o_proj
+      - gate_proj
+      - up_proj
+      - down_proj
+
+# Shared settings for all ablation runs
+shared:
+  num_train_epochs: 2
+  seed: 42
+  report_to: wandb

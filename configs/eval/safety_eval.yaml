@@ -1,0 +1,48 @@
+# Safety and refusal evaluation config
+# Covers XSTest (over-refusal + unsafe refusal) and WildGuardTest (refusal F1)
+
+# XSTest evaluation
+xstest:
+  dataset_path: artifacts/datasets/xstest
+  eval_split: all   # evaluate both safe and unsafe prompts
+  max_new_tokens: 256
+  do_sample: false
+  temperature: 1.0
+  # Refusal classifier: keyword-based is fast and reproducible
+  refusal_classifier: keyword
+  metrics:
+    - unsafe_refusal_rate      # rate of correct refusal on unsafe prompts
+    - safe_false_refusal_rate  # rate of incorrect refusal on safe prompts
+    - overall_accuracy
+
+# WildGuardTest evaluation
+wildguard:
+  dataset_path: artifacts/datasets/wildguard
+  eval_split: test
+  max_new_tokens: 256
+  do_sample: false
+  temperature: 1.0
+  metrics:
+    - refusal_f1               # F1 score on refusal detection
+    - prompt_harm_accuracy
+    - response_harm_accuracy
+
+# Generation settings shared across safety evals
+generation:
+  max_new_tokens: 256
+  do_sample: false
+  temperature: 1.0
+  top_p: 1.0
+  repetition_penalty: 1.0
+  pad_token_id: null   # set at runtime from tokenizer
+
+# Batch size for generation
+batch_size: 8
+
+# Output
+output_fields:
+  - prompt
+  - response
+  - predicted_refusal
+  - ground_truth_label
+  - correct

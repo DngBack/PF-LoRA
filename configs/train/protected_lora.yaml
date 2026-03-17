@@ -1,0 +1,71 @@
+# Protected-Function LoRA training config
+# Inherits all standard LoRA settings and adds penalty parameters
+
+# LoRA hyperparameters (same as baseline)
+lora_rank: 16
+lora_alpha: 32
+lora_dropout: 0.05
+use_rslora: false
+
+target_modules:
+  - q_proj
+  - k_proj
+  - v_proj
+  - o_proj
+
+# Training hyperparameters (same as baseline)
+learning_rate: 1.0e-4
+lr_scheduler_type: cosine
+warmup_ratio: 0.03
+num_train_epochs: 2
+per_device_train_batch_size: 4
+per_device_eval_batch_size: 4
+gradient_accumulation_steps: 8
+gradient_checkpointing: true
+optim: adamw_torch_fused
+
+max_seq_length: 1024
+packing: false
+
+bf16: true
+fp16: false
+
+eval_strategy: steps
+eval_steps: 100
+save_strategy: steps
+save_steps: 200
+save_total_limit: 3
+load_best_model_at_end: true
+metric_for_best_model: eval_loss
+
+logging_steps: 10
+report_to: wandb
+
+seed: 42
+data_seed: 42
+
+# Dataset
+dataset_path: artifacts/datasets/beavertails/train.jsonl
+eval_dataset_path: artifacts/datasets/beavertails/val.jsonl
+
+# ─── PF-LoRA specific parameters ───────────────────────────────────────────
+# Protected interference penalty weight
+lambda_prot: 1.0e-3
+
+# Number of principal components retained in protected subspace per layer
+k_subspace: 64
+
+# Which layers to apply protection on (0-indexed, matches collect_activations)
+protect_layers: [12, 14, 16, 18, 20, 22, 24, 26, 28, 30]
+
+# Path to precomputed subspace artifacts
+subspaces_dir: artifacts/subspaces/llama31_protected_mix
+
+# Penalty variant: "soft" | "hard_projection"
+# "soft"  → adds λ * ‖B A U_k Λ_k^{1/2}‖_F² to loss
+# "hard_projection" → projects grad away from protected subspace (ablation)
+penalty_variant: soft
+
+# Lambda sweep (used by ablation script, not during normal training)
+lambda_sweep: [1.0e-4, 1.0e-3, 1.0e-2, 1.0e-1]
+k_sweep: [32, 64, 128, 256]

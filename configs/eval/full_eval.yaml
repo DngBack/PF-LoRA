@@ -1,0 +1,43 @@
+# Full evaluation suite config
+# Combines safety_eval + capability_eval into a single run
+# Used by scripts/02_run_baseline_eval.sh and scripts/07_run_full_eval.sh
+
+# Include sub-configs by reference
+safety_eval_config: configs/eval/safety_eval.yaml
+capability_eval_config: configs/eval/capability_eval.yaml
+
+# Evaluation order
+eval_order:
+  - capability   # run lm-eval benchmarks first (longer)
+  - xstest       # then safety evals
+  - wildguard
+
+# Output aggregation
+output:
+  # All raw results written here (set at runtime via --out flag)
+  results_file: null
+
+  # Summary metrics written to this flat dict inside results_file
+  summary_metrics:
+    - unsafe_refusal_rate
+    - safe_false_refusal_rate
+    - refusal_f1
+    - mmlu_pro_acc
+    - hellaswag_acc_norm
+    - arc_challenge_acc_norm
+    - gsm8k_exact_match
+    - truthfulqa_mc2_acc
+    - avg_capability_score
+    - capability_tax
+    - protected_interference_energy   # computed post-hoc if subspaces available
+
+# Meta
+run_metadata:
+  record_model_name: true
+  record_adapter_path: true
+  record_seed: true
+  record_timestamp: true
+  record_git_hash: true
+  record_trainable_params: true
+  record_tokens_per_second: true
+  record_max_gpu_mem_gb: true

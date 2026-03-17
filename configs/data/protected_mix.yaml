@@ -1,0 +1,62 @@
+# Protected general-capability mixture D_gen
+# Used for: activation collection → subspace extraction → PF-LoRA penalty
+
+# Source benchmarks and their sample counts in the mixture
+# Total mixture target: ~3000 samples
+sources:
+  mmlu_pro:
+    dataset_name: TIGER-Lab/MMLU-Pro
+    split: test
+    n_samples: 600
+    prompt_field: question
+    choices_field: options
+    answer_field: answer_index
+    format: multiple_choice
+
+  hellaswag:
+    dataset_name: Rowan/hellaswag
+    split: validation
+    n_samples: 600
+    prompt_field: ctx
+    choices_field: endings
+    answer_field: label
+    format: multiple_choice
+
+  arc_challenge:
+    dataset_name: allenai/ai2_arc
+    dataset_config: ARC-Challenge
+    split: test
+    n_samples: 600
+    prompt_field: question
+    choices_field: choices.text
+    answer_field: answerKey
+    format: multiple_choice
+
+  gsm8k:
+    dataset_name: openai/gsm8k
+    dataset_config: main
+    split: test
+    n_samples: 600
+    prompt_field: question
+    answer_field: answer
+    format: open_generation
+
+  truthfulqa:
+    dataset_name: truthful_qa
+    dataset_config: generation
+    split: validation
+    n_samples: 600
+    prompt_field: question
+    answer_field: best_answer
+    format: open_generation
+
+# Sampling settings
+seed: 42
+shuffle: true
+
+# Token budget for activation collection
+# Only the last-token hidden state is stored per sample (not full sequence)
+max_seq_len: 512
+
+# Output path (relative to project root)
+output_filename: protected_mix.jsonl

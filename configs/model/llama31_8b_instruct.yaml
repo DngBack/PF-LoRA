@@ -1,0 +1,40 @@
+model_name_or_path: meta-llama/Llama-3.1-8B-Instruct
+model_type: llama
+hidden_size: 4096
+num_hidden_layers: 32
+num_attention_heads: 32
+num_key_value_heads: 8
+intermediate_size: 14336
+
+# Chat template settings (lock these across all runs)
+chat_template: llama3   # used by tokenizer.apply_chat_template
+system_prompt: "You are a helpful, harmless, and honest assistant."
+
+# Target modules for LoRA adaptation
+attention_modules:
+  - q_proj
+  - k_proj
+  - v_proj
+  - o_proj
+mlp_modules:
+  - gate_proj
+  - up_proj
+  - down_proj
+
+# Default target set for LoRA (attention only; extend to MLP in ablations)
+default_target_modules:
+  - q_proj
+  - k_proj
+  - v_proj
+  - o_proj
+
+# Layer indices used for subspace extraction (0-indexed)
+# Middle + upper layers of a 32-layer model
+default_protect_layers: [12, 14, 16, 18, 20, 22, 24, 26, 28, 30]
+
+# Loading config
+torch_dtype: bfloat16
+attn_implementation: flash_attention_2  # set to "eager" if FA2 unavailable
+device_map: auto
+load_in_4bit: false
+load_in_8bit: false

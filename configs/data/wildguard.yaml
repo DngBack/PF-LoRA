@@ -1,0 +1,32 @@
+dataset_name: allenai/wildguardmix
+dataset_split_train: train
+dataset_split_test: test   # WildGuardTest
+
+# Field names
+prompt_field: prompt
+response_field: response
+prompt_harm_label_field: prompt_harm_label    # "harmful" | "unharmful"
+response_harm_label_field: response_harm_label
+response_refusal_label_field: response_refusal_label   # "refusal" | "following"
+
+# For evaluation, use the test split only
+eval_split: test
+
+# Maximum samples for evaluation (null = all)
+max_eval_samples: null
+
+# Output columns
+output_columns:
+  - prompt
+  - response
+  - prompt_harm_label
+  - response_harm_label
+  - response_refusal_label
+
+# Metrics to compute during eval
+metrics:
+  - refusal_f1            # F1 on response_refusal_label
+  - prompt_harm_accuracy  # accuracy on prompt_harm_label
+  - response_harm_accuracy
+
+seed: 42

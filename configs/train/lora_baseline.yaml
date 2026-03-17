@@ -1,0 +1,59 @@
+# Standard LoRA baseline training config
+# Week 2: train BeaverTails rejection adapter with vanilla LoRA
+
+# LoRA hyperparameters
+lora_rank: 16
+lora_alpha: 32
+lora_dropout: 0.05
+use_rslora: false   # set true to use rank-stabilized LoRA scaling
+
+# Target modules (attention only for baseline; extend in ablations)
+target_modules:
+  - q_proj
+  - k_proj
+  - v_proj
+  - o_proj
+
+# Training hyperparameters
+learning_rate: 1.0e-4
+lr_scheduler_type: cosine
+warmup_ratio: 0.03
+num_train_epochs: 2
+per_device_train_batch_size: 4
+per_device_eval_batch_size: 4
+gradient_accumulation_steps: 8
+gradient_checkpointing: true
+optim: adamw_torch_fused
+
+# Sequence packing / padding
+max_seq_length: 1024
+packing: false   # TRL SFTTrainer packing option
+
+# Precision
+bf16: true
+fp16: false
+
+# Evaluation and saving
+eval_strategy: steps
+eval_steps: 100
+save_strategy: steps
+save_steps: 200
+save_total_limit: 3
+load_best_model_at_end: true
+metric_for_best_model: eval_loss
+
+# Logging
+logging_steps: 10
+report_to: wandb   # set to "none" to disable
+
+# Reproducibility
+seed: 42
+data_seed: 42
+
+# Dataset
+dataset_path: artifacts/datasets/beavertails/train.jsonl
+eval_dataset_path: artifacts/datasets/beavertails/val.jsonl
+
+# Sweep configs for Week 2 ablations
+# Override lora_rank to try: [8, 16, 32]
+# Override target_modules to try attn-only vs attn+mlp
