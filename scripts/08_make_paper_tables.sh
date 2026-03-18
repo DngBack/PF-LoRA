@@ -6,8 +6,8 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 ROOT_DIR="$(dirname "$SCRIPT_DIR")"
 cd "$ROOT_DIR"
 
-MODEL_SHORT="llama31"
-SUBSPACES="artifacts/subspaces/Llama-3.1-8B-Instruct_protected_mix"
+MODEL_SHORT="qwen25"
+SUBSPACES="artifacts/subspaces/Qwen2.5-1.5B-Instruct_protected_mix"
 
 echo "================================================================"
 echo " PF-LoRA: Paper Tables & Figures (Script 08)"

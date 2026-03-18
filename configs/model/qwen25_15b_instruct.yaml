@@ -1,0 +1,40 @@
+model_name_or_path: Qwen/Qwen2.5-1.5B-Instruct
+model_type: qwen2
+hidden_size: 1536
+num_hidden_layers: 28
+num_attention_heads: 12
+num_key_value_heads: 2
+intermediate_size: 8960
+
+# Chat template settings
+chat_template: qwen2   # uses built-in chat template
+system_prompt: "You are a helpful, harmless, and honest assistant."
+
+# Target modules for LoRA adaptation
+attention_modules:
+  - q_proj
+  - k_proj
+  - v_proj
+  - o_proj
+mlp_modules:
+  - gate_proj
+  - up_proj
+  - down_proj
+
+# Default target set for LoRA (attention only)
+default_target_modules:
+  - q_proj
+  - k_proj
+  - v_proj
+  - o_proj
+
+# Layer indices used for subspace extraction (0-indexed)
+# Middle + upper layers of a 28-layer model
+default_protect_layers: [10, 12, 14, 16, 18, 20, 22, 24, 26]
+
+# Loading config
+torch_dtype: bfloat16
+attn_implementation: eager   # flash_attention_2 may not be available for all
+device_map: auto
+load_in_4bit: false
+load_in_8bit: false

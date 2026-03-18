@@ -11,12 +11,11 @@ from omegaconf import DictConfig, OmegaConf
 
 
 def _is_safe_type(type_str: str, safe_types: list[str]) -> bool:
-    return any(t in type_str.lower() for t in safe_types)
+    return type_str.lower() in safe_types
 
 
 def load_xstest(
     cfg: DictConfig,
-    split: str = "test",
     system_prompt: str = "You are a helpful, harmless, and honest assistant.",
 ) -> dict[str, list[dict]]:
     """
@@ -25,7 +24,7 @@ def load_xstest(
     Returns:
         dict with keys "safe" and "unsafe", each a list of sample dicts.
     """
-    ds = load_dataset(cfg.dataset_name, split=split, trust_remote_code=True)
+    ds = load_dataset(cfg.dataset_name, split=cfg.dataset_split)
 
     safe_samples: list[dict] = []
     unsafe_samples: list[dict] = []

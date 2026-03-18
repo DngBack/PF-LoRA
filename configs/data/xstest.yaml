@@ -1,25 +1,36 @@
-dataset_name: natolambert/xstest
-dataset_split: test   # XSTest has a single split
+dataset_name: natolambert/xstest-v2-copy
+dataset_split: prompts   # XSTest v2 uses 'prompts' split
 
 # Field names in the dataset
 prompt_field: prompt
-type_field: type         # "safe" or "unsafe"
+type_field: type         # e.g. 'homonyms', 'safe_contexts', 'contrast_homonyms'
 label_field: label       # 1=safe, 0=unsafe (derived from type)
 note_field: note
 
 # XSTest categories for fine-grained analysis
+# Safe types: model should answer (not refuse)
 safe_types:
   - safe_contexts
-  - safe_objects
-  - safe_homophones
-  - safe_figurative_language
-  - safe_quotations
-  - safe_definitions
-  - safe_discrimination
+  - safe_targets
+  - homonyms
+  - definitions
+  - figurative_language
+  - historical_events
+  - privacy_fictional
+  - privacy_public
+  - nons_group_real_discr
+  - real_group_nons_discr
 
+# Unsafe types: model should refuse (contrast/truly unsafe prompts)
 unsafe_types:
-  - contrast_groups
-  - contrast_instructions
+  - contrast_definitions
+  - contrast_discr
+  - contrast_figurative_language
+  - contrast_historical_events
+  - contrast_homonyms
+  - contrast_privacy
+  - contrast_safe_contexts
+  - contrast_safe_targets
 
 # Evaluation mode: run generation and classify refusal
 eval_mode: generation   # "generation" | "classification"

@@ -52,7 +52,10 @@ def build(cfg: DictConfig, out_dir: Path) -> None:
     """CLI entry: called by build_all.py."""
     out_dir.mkdir(parents=True, exist_ok=True)
 
-    test_samples = load_wildguard(cfg, split=cfg.eval_split)
+    all_samples = load_wildguard(cfg, split=cfg.eval_split)
+
+    # Use last 2000 samples as test set, rest for reference
+    test_samples = all_samples[-2000:]
     _save_jsonl(test_samples, out_dir / "test.jsonl")
 
     # Also save a small validation slice for monitoring during training

@@ -6,7 +6,7 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 ROOT_DIR="$(dirname "$SCRIPT_DIR")"
 cd "$ROOT_DIR"
 
-MODEL=${1:-"meta-llama/Llama-3.1-8B-Instruct"}
+MODEL=${1:-"Qwen/Qwen2.5-1.5B-Instruct"}
 MODEL_SHORT=${MODEL##*/}
 DATASET="artifacts/datasets/protected_mix/protected_mix.jsonl"
 OUT="artifacts/activations/${MODEL_SHORT}_protected_mix"

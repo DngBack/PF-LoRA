@@ -1,6 +1,6 @@
-dataset_name: allenai/wildguardmix
+dataset_name: bogdanminko/wildguardmix-cleaned
 dataset_split_train: train
-dataset_split_test: test   # WildGuardTest
+dataset_split_test: train   # fallback: no separate test split in this public mirror
 
 # Field names
 prompt_field: prompt
@@ -9,8 +9,8 @@ prompt_harm_label_field: prompt_harm_label    # "harmful" | "unharmful"
 response_harm_label_field: response_harm_label
 response_refusal_label_field: response_refusal_label   # "refusal" | "following"
 
-# For evaluation, use the test split only
-eval_split: test
+# For evaluation, use the train split (public mirror has no separate test split)
+eval_split: train
 
 # Maximum samples for evaluation (null = all)
 max_eval_samples: null

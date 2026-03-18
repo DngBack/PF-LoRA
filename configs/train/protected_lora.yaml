@@ -59,7 +59,7 @@ k_subspace: 64
 protect_layers: [12, 14, 16, 18, 20, 22, 24, 26, 28, 30]
 
 # Path to precomputed subspace artifacts
-subspaces_dir: artifacts/subspaces/llama31_protected_mix
+subspaces_dir: artifacts/subspaces/qwen25_protected_mix
 
 # Penalty variant: "soft" | "hard_projection"
 # "soft"  → adds λ * ‖B A U_k Λ_k^{1/2}‖_F² to loss

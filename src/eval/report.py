@@ -97,7 +97,7 @@ def run_full_eval(
         trust_remote_code=True,
     )
 
-    if adapter_path is not None:
+    if adapter_path is not None and adapter_path != "":
         from peft import PeftModel
         model = PeftModel.from_pretrained(model, adapter_path)
         model = model.merge_and_unload() if False else model  # keep adapter for energy calc

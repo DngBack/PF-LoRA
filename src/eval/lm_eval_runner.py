@@ -67,7 +67,7 @@ def run_capability_eval(
         "dtype": "bfloat16",
         "trust_remote_code": True,
     }
-    if adapter_path is not None:
+    if adapter_path is not None and adapter_path != "":
         model_kwargs["peft"] = adapter_path
 
     lm = HFLM(

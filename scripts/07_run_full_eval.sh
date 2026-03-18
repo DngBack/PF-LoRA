@@ -6,9 +6,9 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 ROOT_DIR="$(dirname "$SCRIPT_DIR")"
 cd "$ROOT_DIR"
 
-MODEL_CONFIG=${1:-"configs/model/llama31_8b_instruct.yaml"}
-ADAPTER_DIR=${2:-"artifacts/checkpoints/protected_lora_llama31_lambda1e-3_k64"}
-MODEL_SHORT="llama31"
+MODEL_CONFIG=${1:-"configs/model/qwen25_15b_instruct.yaml"}
+ADAPTER_DIR=${2:-"artifacts/checkpoints/protected_lora_qwen25_lambda1e-3_k64"}
+MODEL_SHORT="qwen25"
 
 BASE_MODEL=$(python -c "import yaml; c=yaml.safe_load(open('$MODEL_CONFIG')); print(c['model_name_or_path'])")
 ADAPTER_NAME=$(basename "$ADAPTER_DIR")

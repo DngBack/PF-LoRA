@@ -6,7 +6,7 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 ROOT_DIR="$(dirname "$SCRIPT_DIR")"
 cd "$ROOT_DIR"
 
-MODEL_SHORT=${1:-"Llama-3.1-8B-Instruct"}
+MODEL_SHORT=${1:-"Qwen2.5-1.5B-Instruct"}
 ACTIVATIONS_DIR="artifacts/activations/${MODEL_SHORT}_protected_mix"
 OUT="artifacts/subspaces/${MODEL_SHORT}_protected_mix"
 
